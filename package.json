@@ -1,0 +1,24 @@
+{
+  "name": "duckduckcode",
+  "version": "1.0.0",
+  "description": "coding problems",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aidanmconnolly/duckduckcode.git"
+  },
+  "author": "Ansh Tyler Aidan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aidanmconnolly/duckduckcode/issues"
+  },
+  "homepage": "https://github.com/aidanmconnolly/duckduckcode#readme"
+}
