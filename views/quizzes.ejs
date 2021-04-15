@@ -1,0 +1,22 @@
+<head>
+    <link href="views/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<img id="logo" src="views/duck.jpg" height=60>
+<h1>Quizzes</h1>
+
+<div class="topnav">
+    <a href="/home">Home</a>
+    <a href="/python">Python</a>
+    <a href="/java">Java</a>
+    <a class="active" href="/quizzes">Quizzes</a>
+    <% if (name == null) { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    <% } else { %>
+    <a class="account">Welcome Back <%= name %>!</a>
+    <form action="/logout?_method=DELETE" method="POST">
+        <button class="logout"type="submit">Log Out</button>
+    </form>
+    <% } %>
+</div>

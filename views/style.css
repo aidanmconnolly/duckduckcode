@@ -83,3 +83,30 @@ body {
   .topnav a.active {
         color: black;
   }
+
+  .topnav a.account {
+    color: black;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 14px 24px
+  }
+
+  .topnav a.account:hover {
+    background-color: rgb(255, 0, 0);
+  }
+
+  .topnav .logout {
+    background-color:rgb(255, 0, 0);
+    border: none;
+    color: black;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight:bold;
+    font-size: 22px;
+  }
+
+  .topnav .logout:hover {
+    background-color: white
+  }
