@@ -9,7 +9,31 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const mongoose = require('mongoose')
+const User = require('./models/user')
 var fs = require('fs');
+
+const dbURI = "mongodb+srv://admin:test123@duckduckgoose.qkunt.mongodb.net/DuckDuckGoose?retryWrites=true&w=majority"
+mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
+  .then((result) => {
+    User.find()
+    .then((result) => {
+      for (var i = 0; i < result.length; i++) {
+        users.push({
+          id : result[i].id,
+          name: result[i].name,
+          email: result[i].email,
+          password: result[i].password
+        })
+      }
+      console.log(users)
+      app.listen(3000);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  })
+  .catch((err) => console.log(err));
 
 //app.set('view engine', 'html');
 //app.engine('html', require('ejs').renderFile);
@@ -23,6 +47,43 @@ initializePassport(
 
 const users = []
 
+app.get('/add-user', (req, res) => {
+  const user = new User({
+    name: 'ansh',
+    email: 'ansh@moraje.com',
+    password: '$2b$10$MsEWijf/9rtamIowwG71N.3rW0nyRvfOX7CM2iqRnX8cu3G4C0CjW'
+  });
+
+  user.save()
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+});
+
+app.get('/all-users', (req, res) => {
+  User.find()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get('/single-user', (req, res) => {
+  User.findById('6085ef7a7b96403e8fc92b2b')
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+})
+
+/*
 fs.readFile('accounts.txt', 'utf8', function(err, data) {
   if (err) throw err;
   var accountInfo = data.trim().split("\n")
@@ -37,6 +98,7 @@ fs.readFile('accounts.txt', 'utf8', function(err, data) {
   }
   console.log(users)
 });
+*/
 
 app.set('view-engine', 'ejs')
 app.use('/views', express.static('views'));
@@ -82,11 +144,26 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword
-    })
-    console.log(users[users.length-1])
-    res.redirect('/login')
+    });
+    const user = new User({
+      id: Date.now().toString(),
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword
+    });
+  
+    user.save()
+      .then((result) => {
+        res.send(result)
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+    
+    console.log(users[users.length-1]);
+    res.redirect('/login');
   } catch {
-    res.redirect('/register')
+    res.redirect('/register');
   }
 })
 
@@ -141,5 +218,3 @@ function checkNotAuthenticated(req, res, next) {
   }
   next()
 }
-
-app.listen(3000)
