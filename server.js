@@ -2,15 +2,16 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
   }
   
-const express = require('express')
-const app = express()
-const bcrypt = require('bcrypt')
-const passport = require('passport')
-const flash = require('express-flash')
-const session = require('express-session')
-const methodOverride = require('method-override')
-const mongoose = require('mongoose')
-const User = require('./models/user')
+const express = require('express');
+const app = express();
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const flash = require('express-flash');
+const session = require('express-session');
+const methodOverride = require('method-override');
+const mongoose = require('mongoose');
+const User = require('./models/user');
+const Quiz = require('./models/quiz');
 var fs = require('fs');
 
 const dbURI = "mongodb+srv://admin:test123@duckduckgoose.qkunt.mongodb.net/DuckDuckGoose?retryWrites=true&w=majority"
@@ -47,10 +48,25 @@ initializePassport(
 
 const users = []
 
+app.get('/add-quiz', (req, res) => {
+  const quiz = new Quiz({
+    questions: ["What is 1 + 1?", "What color is the sky?", "Are you human?"]
+  });
+
+  quiz.save()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+});
+
 app.get('/add-user', (req, res) => {
   const user = new User({
-    name: 'ansh',
-    email: 'ansh@moraje.com',
+    id: Date.now().toString(),
+    name: 'bob',
+    email: 'bob@mgmail.com',
     password: '$2b$10$MsEWijf/9rtamIowwG71N.3rW0nyRvfOX7CM2iqRnX8cu3G4C0CjW'
   });
 
