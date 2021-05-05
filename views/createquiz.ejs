@@ -1,15 +1,24 @@
 <head>
-    <link href="views/createquiz.css" rel="stylesheet" type="text/css">
+    <link href="views/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <h1>Create A Quiz</h1>
 
 <div class="topnav">
-    <a href="home.html">Home</a>
-    <a href="python.html">Python</a>
-    <a href="java.html">Java</a>
-    <a href="testquiz.html">Quizzes</a>
-    <a href="account.html">Account</a>
+    <a href="/home">Home</a>
+    <a href="/python">Python</a>
+    <a href="/java">Java</a>
+    <a href="/quizzes">Quizzes</a>
+    <a class="active" href="/createquiz">Create A Quiz</a>
+    <% if (name == null) { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    <% } else { %>
+    <a class="account">Welcome Back <%= name %>!</a>
+    <form action="/logout?_method=DELETE" method="POST">
+        <button class="logout"type="submit">Log Out</button>
+    </form>
+    <% } %>
 </div>
 
 <div>

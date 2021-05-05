@@ -14,9 +14,20 @@ const User = require('./models/user');
 const Quiz = require('./models/quiz');
 var fs = require('fs');
 
-const dbURI = "mongodb+srv://admin:test123@duckduckgoose.qkunt.mongodb.net/DuckDuckGoose?retryWrites=true&w=majority"
+const dbURI = "mongodb+srv://admin:test123@duckduckgoose.qkunt.mongodb.net/DuckDuckGoose?retryWrites=true&w=majority";
+var users = [];
+var quizzes = [];
+
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
+    Quiz.find()
+      .then((result) => {
+        for (var i = 0; i < result.length; i++) {
+          quizzes.push({
+            questions: result[i].questions
+          })
+        }
+      })
     User.find()
     .then((result) => {
       for (var i = 0; i < result.length; i++) {
@@ -27,7 +38,8 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
           password: result[i].password
         })
       }
-      console.log(users)
+      console.log(quizzes);
+      console.log(users);
       app.listen(3000);
     })
     .catch((err) => {
@@ -45,8 +57,6 @@ initializePassport(
   email => users.find(user => user.email === email),
   id => users.find(user => user.id === id)
 )
-
-const users = []
 
 app.get('/add-quiz', (req, res) => {
   const quiz = new Quiz({
@@ -184,35 +194,43 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 })
 
 app.get('/home', (req, res) => {
-  var name = null
+  var name = null;
   if (!(typeof req.user == "undefined")) {
-    name = req.user.name
+    name = req.user.name;
   }
-  res.render('home.ejs', {name: name})
+  res.render('home.ejs', {name: name});
 })
 
 app.get('/java', (req, res) => {
-  var name = null
+  var name = null;
   if (!(typeof req.user == "undefined")) {
-    name = req.user.name
+    name = req.user.name;
   }
-  res.render('java.ejs', {name:name})
+  res.render('java.ejs', {name:name});
 })
 
 app.get('/python', (req, res) => {
-  var name = null
+  var name = null;
   if (!(typeof req.user == "undefined")) {
-    name = req.user.name
+    name = req.user.name;
   }
-  res.render('python.ejs', {name:name})
+  res.render('python.ejs', {name:name});
 })
 
 app.get('/quizzes', (req, res) => {
-  var name = null
+  var name = null;
   if (!(typeof req.user == "undefined")) {
-    name = req.user.name
+    name = req.user.name;
   }
-  res.render('quizzes.ejs', {name:name})
+  res.render('quizzes.ejs', {name:name});
+})
+
+app.get('/createquiz', (req, res) => {
+  var name = null;
+  if (!(typeof req.user == "undefined")) {
+    name = req.user.name;
+  }
+  res.render('createquiz.ejs', {name:name});
 })
 
 app.delete('/logout', (req, res) => {
