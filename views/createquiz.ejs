@@ -1,0 +1,85 @@
+<head>
+    <link href="views/createquiz.css" rel="stylesheet" type="text/css">
+    <link href="views/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<h1>Create A Quiz</h1>
+
+<div class="topnav">
+    <a href="home.html">Home</a>
+    <a href="python.html">Python</a>
+    <a href="java.html">Java</a>
+    <a href="testquiz.html">Quizzes</a>
+    <a href="account.html">Account</a>
+</div>
+
+<div>
+    <h4>Question 1:</h4>
+    <form>
+        <label for="question">Question (leave blank if last quetion):</label><br>
+        <input size=100 type="text" id="question" name="question"><br>
+        <label for="answer1">Answer 1:</label>
+        <input type="text" id="answer1" name="answerValue">
+        <input type="radio" id="0" name="answerIndex" value="0"><br>
+        <label for="answer2">Answer 2:</label>
+        <input type="text" id="answer2" name="answerValue">
+        <input type="radio" id="1" name="answerIndex" value="1"><br>
+        <label for="answer3">Answer 3:</label>
+        <input type="text" id="answer3" name="answerValue">
+        <input type="radio" id="2" name="answerIndex" value="2"><br>
+        <label for="answer4">Answer 4:</label>
+        <input type="text" id="answer4" name="answerValue">
+        <input type="radio" id="3" name="answerIndex" value="3"><br>
+    </form>
+
+    <button id="nextQuestion" onclick="createQuiz()">Next Question</button>
+</div>
+
+<script>
+    const nextQuestionButton = document.getElementById("nextQuestion");
+
+    const quiz1 = new Quiz();
+    let output = "QUIZ:";
+
+    function Quiz() {
+        this.questions = [];
+    }
+
+    function Question(question) {
+        this.question = question;
+        this.answers = [];
+        this.answer = "";
+    }
+
+    function createQuiz() {
+        const question = document.querySelector('input[name="question"]').value;
+        if(question === "") {
+            //var i
+            //for(i = 0; i<quiz1.questions.length; i++) {
+            //    alert(quiz1.questions[i].question)
+            //}
+            
+        }
+        else {
+            output += question + "\n";
+            question1 = new Question(question);
+            const answers = document.querySelectorAll('input[name="answerValue"]');
+            for(const answer of answers) {
+                question1.answers.push(answer.value);
+                output += answer.value + "\t";
+            }
+            const rbs = document.querySelectorAll('input[name="answerIndex"]');
+            let selectedValue;
+            for (const rb of rbs) {
+                if (rb.checked) {
+                    selectedValue = rb.value;
+                    break;
+                }
+            }
+            question1.answer = parseInt(selectedValue);
+            output += "\n" + selectedValue + "\n\n\n";
+            quiz1.questions.push(question1);
+        }
+    }
+
+</script>
