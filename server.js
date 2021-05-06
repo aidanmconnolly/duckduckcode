@@ -1,3 +1,5 @@
+var PORT = process.env.PORT || 3000;
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
   }
@@ -40,7 +42,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
       }
       console.log(quizzes);
       console.log(users);
-      app.listen(3000);
+      app.listen(PORT);
     })
     .catch((err) => {
       console.log(err);
