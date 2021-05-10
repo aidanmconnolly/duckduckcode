@@ -23,36 +23,12 @@
     <% } %>
 </div>
 
-<form id="frm1">
-    <input type="radio" id="quiz1" name="quiz" value="1">
-    <label for="quiz1">Quiz1</label><br>
-    <input type="radio" id="quiz2" name="quiz" value="2">
-    <label for="quiz2">Quiz2</label><br>
-  </form> 
-  <div class="body2">
-    <div id="progress">
-      <p>Correctly Answered: </p>
-      <p id="correctlyAnswered">0</p>
-      <p>Incorrectly Answered: </p>
-      <p id="incorrectlyAnswered">0</p>
-      <p>Remaining: </p>
-      <p id="remaining">0</p>
-    </div>
-    <div class="body3">
-      <div class="container">
-        <div id="question-container" class="hide">
-          <div id="question">Question</div>
-          <div id="answer-buttons" class="btn-grid">
-            <button class="btn">Answer 1</button>
-            <button class="btn">Answer 2</button>
-            <button class="btn">Answer 3</button>
-            <button class="btn">Answer 4</button>
-          </div>
-        </div>
-        <div class="controls">
-          <button id="start-btn" class="start-btn btn">Start</button>
-          <button id="next-btn" class="next-btn btn hide">Next</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
+<form action="/takequiz" method="POST"> 
+  <% for (var i = 0; i < quizzes.length; i++) { %>
+    <label for="selectedQuiz"><%= quizzes[i].title %></label>
+    <input type="radio" id="selectedQuiz" name="selectedQuiz" value="<%= i %>" ><br>
+  <% } %>
+
+  <button type="submit">Take Quiz</button>
+</form>

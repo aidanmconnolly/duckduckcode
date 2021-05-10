@@ -20,12 +20,19 @@ const dbURI = "mongodb+srv://admin:test123@duckduckgoose.qkunt.mongodb.net/DuckD
 var users = [];
 var quizzes = [];
 
+function Question(question, answers, correctAnswerIndex) {
+  this.question = question;
+  this.answers = answers;
+  this.correctAnswerIndex = correctAnswerIndex;
+}
+
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
     Quiz.find()
       .then((result) => {
         for (var i = 0; i < result.length; i++) {
           quizzes.push({
+            title: result[i].title,
             questions: result[i].questions
           })
         }
@@ -128,6 +135,9 @@ fs.readFile('accounts.txt', 'utf8', function(err, data) {
 });
 */
 
+app.set('view engine', 'html');
+app.engine('html', require('ejs').renderFile);
+
 app.set('view-engine', 'ejs')
 app.use('/views', express.static('views'));
 app.use(express.urlencoded({ extended: false }))
@@ -224,7 +234,7 @@ app.get('/quizzes', (req, res) => {
   if (!(typeof req.user == "undefined")) {
     name = req.user.name;
   }
-  res.render('quizzes.ejs', {name:name});
+  res.render('quizzes.ejs', {name: name, quizzes: quizzes});
 })
 
 app.get('/createquiz', (req, res) => {
@@ -233,6 +243,44 @@ app.get('/createquiz', (req, res) => {
     name = req.user.name;
   }
   res.render('createquiz.ejs', {name:name});
+})
+
+app.post('/takequiz', async (req, res) => {
+  try {
+    res.render('takequiz.html');
+  } catch (error) {
+    res.redirect('/quizzes')
+  }
+})
+
+app.post('/createquiz', async (req, res) => {
+  try {
+    users.push({
+      id: Date.now().toString(),
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword
+    });
+    const user = new User({
+      id: Date.now().toString(),
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword
+    });
+  
+    user.save()
+      .then((result) => {
+        res.send(result)
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+    
+    console.log(users[users.length-1]);
+    res.redirect('/login');
+  } catch {
+    res.redirect('/register');
+  }
 })
 
 app.delete('/logout', (req, res) => {
