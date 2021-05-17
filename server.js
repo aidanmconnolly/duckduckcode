@@ -20,10 +20,9 @@ const dbURI = "mongodb+srv://admin:test123@duckduckgoose.qkunt.mongodb.net/DuckD
 var users = [];
 var quizzes = [];
 
-function Question(question, answers, correctAnswerIndex) {
+function Question(question, answers) {
   this.question = question;
   this.answers = answers;
-  this.correctAnswerIndex = correctAnswerIndex;
 }
 
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -68,8 +67,25 @@ initializePassport(
 )
 
 app.get('/add-quiz', (req, res) => {
+  var questionsArray = []
+  questionsArray[0] = new Question("What is 1 + 1?",  
+    [{text: "1", correct: false},
+    {text: "2", correct: true},
+    {text: "3", correct: false},
+    {text: "4", correct: false}]);
+  questionsArray[1] = new Question("What color is the sky?",
+    [{text: "Blue", correct: true},
+    {text: "Green", correct: false},
+    {text:"Red", correct: false},
+    {text: "Yellow", correct: false}]);
+  questionsArray[2] = new Question("Who is the best computer science teacher?",
+  [{text: "Mr. Respass", correct: true},
+  {text: "Mr. Isecke", correct: true},
+  {text:"Mr. Wang", correct: true},
+  {text: "Ansh", correct: false}]);
   const quiz = new Quiz({
-    questions: ["What is 1 + 1?", "What color is the sky?", "Are you human?"]
+    title: "test1",
+    questions: questionsArray
   });
 
   quiz.save()
@@ -247,28 +263,32 @@ app.get('/createquiz', (req, res) => {
 
 app.post('/takequiz', async (req, res) => {
   try {
-    res.render('takequiz.html');
+    var quiz = quizzes[req.body.selectedQuiz];
+    res.render('takequiz.ejs', {quiz: quiz});
   } catch (error) {
+    console.log(error)
     res.redirect('/quizzes')
   }
 })
 
+
 app.post('/createquiz', async (req, res) => {
   try {
-    users.push({
-      id: Date.now().toString(),
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword
+    var questions = new Question(req.body.question, 
+      [{text: req.body.correctAnwer, correct: true},
+      {text: req.body.answer2, correct: false},
+      {text: req.body.answer3, correct: false},
+      {text: req.body.answer4, correct: false}])
+    quizzes.push({
+      title: req.body.title,
+      questions: questions
     });
-    const user = new User({
-      id: Date.now().toString(),
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword
+    const quiz = new Quizz({
+      title: req.body.title,
+      questions: questions
     });
   
-    user.save()
+    quiz.save()
       .then((result) => {
         res.send(result)
       })
@@ -276,10 +296,10 @@ app.post('/createquiz', async (req, res) => {
         console.log(err)
       });
     
-    console.log(users[users.length-1]);
-    res.redirect('/login');
+    console.log(quizzes[quizzes.length-1]);
+    res.redirect('/createquiz');
   } catch {
-    res.redirect('/register');
+    res.redirect('/createquiz');
   }
 })
 

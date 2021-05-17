@@ -9,11 +9,11 @@
     <a href="/python">Python</a>
     <a href="/java">Java</a>
     <a href="/quizzes">Quizzes</a>
-    <a class="active" href="/createquiz">Create A Quiz</a>
     <% if (name == null) { %>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
     <% } else { %>
+    <a class="active" href="/createquiz">Create A Quiz</a>
     <a class="account">Welcome Back <%= name %>!</a>
     <form action="/logout?_method=DELETE" method="POST">
         <button class="logout"type="submit">Log Out</button>
@@ -23,71 +23,33 @@
 
 <div>
     <h4>Question 1:</h4>
-    <form>
-        <label for="question">Question (leave blank if last quetion):</label><br>
-        <input size=100 type="text" id="question" name="question"><br>
-        <label for="answer1">Answer 1:</label>
-        <input type="text" id="answer1" name="answerValue">
-        <input type="radio" id="0" name="answerIndex" value="0"><br>
-        <label for="answer2">Answer 2:</label>
-        <input type="text" id="answer2" name="answerValue">
-        <input type="radio" id="1" name="answerIndex" value="1"><br>
-        <label for="answer3">Answer 3:</label>
-        <input type="text" id="answer3" name="answerValue">
-        <input type="radio" id="2" name="answerIndex" value="2"><br>
-        <label for="answer4">Answer 4:</label>
-        <input type="text" id="answer4" name="answerValue">
-        <input type="radio" id="3" name="answerIndex" value="3"><br>
+    <form action="/createquiz" method="POST">
+        <div>
+            <label for="title">Quiz Title</label>
+            <input type="text" id="title" name="title" required>
+          </div>
+          <div>
+            <label for="question">Question</label>
+            <input type="question" id="question" name="question" required>
+          </div>
+          <div>
+            <label for="correctAnswer">Correct Answer</label>
+            <input type="correctAnswer" id="correctAnswer" name="correctAnswer" required>
+          </div>
+          <div>
+            <label for="answer2">Answer 2</label>
+            <input type="answer2" id="answer2" name="answer2" required>
+          </div>
+          <div>
+            <label for="answer3">Answer 3</label>
+            <input type="answer3" id="answer3" name="answwer3" required>
+          </div>
+          <div>
+            <label for="answer4">Answer4</label>
+            <input type="answer4" id="answer4" name="answer4" required>
+          </div>
+          <button type="submit">Create Quiz</button>
     </form>
-
-    <button id="nextQuestion" onclick="createQuiz()">Next Question</button>
 </div>
 
-<script>
-    const nextQuestionButton = document.getElementById("nextQuestion");
 
-    const quiz1 = new Quiz();
-    let output = "QUIZ:";
-
-    function Quiz() {
-        this.questions = [];
-    }
-
-    function Question(question) {
-        this.question = question;
-        this.answers = [];
-        this.answer = "";
-    }
-
-    function createQuiz() {
-        const question = document.querySelector('input[name="question"]').value;
-        if(question === "") {
-            //var i
-            //for(i = 0; i<quiz1.questions.length; i++) {
-            //    alert(quiz1.questions[i].question)
-            //}
-            
-        }
-        else {
-            output += question + "\n";
-            question1 = new Question(question);
-            const answers = document.querySelectorAll('input[name="answerValue"]');
-            for(const answer of answers) {
-                question1.answers.push(answer.value);
-                output += answer.value + "\t";
-            }
-            const rbs = document.querySelectorAll('input[name="answerIndex"]');
-            let selectedValue;
-            for (const rb of rbs) {
-                if (rb.checked) {
-                    selectedValue = rb.value;
-                    break;
-                }
-            }
-            question1.answer = parseInt(selectedValue);
-            output += "\n" + selectedValue + "\n\n\n";
-            quiz1.questions.push(question1);
-        }
-    }
-
-</script>

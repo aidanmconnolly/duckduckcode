@@ -10,11 +10,11 @@
     <a class="active" href="/python">Python</a>
     <a href="/java">Java</a>
     <a href="/quizzes">Quizzes</a>
-    <a href="/createquiz">Create A Quiz</a>
     <% if (name == null) { %>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
     <% } else { %>
+    <a href="/createquiz">Create A Quiz</a>
     <a class="account">Welcome Back <%= name %>!</a>
     <form action="/logout?_method=DELETE" method="POST">
         <button class="logout"type="submit">Log Out</button>
