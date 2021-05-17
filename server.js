@@ -283,7 +283,7 @@ app.post('/createquiz', async (req, res) => {
       title: req.body.title,
       questions: questions
     });
-    const quiz = new Quizz({
+    const quiz = new Quiz({
       title: req.body.title,
       questions: questions
     });
