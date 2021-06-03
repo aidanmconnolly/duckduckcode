@@ -274,11 +274,34 @@ app.post('/takequiz', async (req, res) => {
 
 app.post('/createquiz', async (req, res) => {
   try {
-    var questions = new Question(req.body.question, 
-      [{text: req.body.correctAnwer, correct: true},
+    var questions = [new Question(req.body.question, 
+      [{text: req.body.correctAnswer, correct: true},
       {text: req.body.answer2, correct: false},
       {text: req.body.answer3, correct: false},
-      {text: req.body.answer4, correct: false}])
+      {text: req.body.answer4, correct: false}]),
+    new Question(req.body.question2,
+      [{text: req.body.correctAnswer2, correct: true},
+      {text: req.body.answer2_2, correct: false},
+      {text: req.body.answer3_2, correct: false},
+      {text: req.body.answer4_2, correct: false}]),
+      new Question(req.body.question3,
+        [{text: req.body.correctAnswer3, correct: true},
+        {text: req.body.answer2_3, correct: false},
+        {text: req.body.answer3_3, correct: false},
+        {text: req.body.answer4_3, correct: false}]),
+      new Question(req.body.question4,
+      [{text: req.body.correctAnswer4, correct: true},
+      {text: req.body.answer2_4, correct: false},
+      {text: req.body.answer3_4, correct: false},
+      {text: req.body.answer4_4, correct: false}]),
+      new Question(req.body.question5,
+        [{text: req.body.correctAnswer5, correct: true},
+        {text: req.body.answer2_5, correct: false},
+        {text: req.body.answer3_5, correct: false},
+        {text: req.body.answer4_5, correct: false}])]
+    for (var i = 0; i < questions.length; i++) {
+      questions[i].answers = questions[i].answers.sort(() => Math.random() - .5)
+    }
     quizzes.push({
       title: req.body.title,
       questions: questions

@@ -16,7 +16,6 @@
     </div>
 </div>
     
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -30,8 +29,6 @@
     const finishButton = document.getElementById('finish-btn')
 
     let shuffledQuestions, currentQuestionIndex
-
-    
 
     startButton.addEventListener('click', startGame)
     nextButton.addEventListener('click', () => {
@@ -102,13 +99,20 @@
         element.classList.remove('wrong')
     }
 
-    /*var quiz = sessionStorage.getItem('quiz');
+    
+    var quiz = '<%- JSON.stringify(quiz) %>'
+    quiz = JSON.parse(quiz)
+    console.log(quiz)
+    var questions = [];
 
     for (var i = 0; i < quiz.questions.length; i++) {
-        questions[i] = {question: quiz.questions[i].question, answers: quiz[i].answers}
+        questions[i] = {question: quiz.questions[i].question, answers: quiz.questions[i].answers}
     }
-    */
-
+    
+    /*
+    
+    
+    
     const questions = [
         {
             question: 'What is 2 + 2?',
@@ -138,6 +142,8 @@
             ]
         }
     ]
+    */
+    
+    
   </script>
   <title>Quiz</title>
-</head>
